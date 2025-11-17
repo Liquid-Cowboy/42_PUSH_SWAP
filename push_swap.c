@@ -6,9 +6,9 @@
 int main(int ac, char **av)
 {
     int size_a;
-    int size_b;
+   // int size_b;
     int *stack_a;
-    int *stack_b;
+   // int *stack_b;
     char **ar;
     int i = 0;
 
@@ -23,7 +23,7 @@ int main(int ac, char **av)
     while (ar[size_a])
         size_a++;
     // since arrays don't have a null terminator, size_a stands for the total number of elements in the array
-    size_b = 0;
+   // size_b = 0;
     stack_a = create_first_stack(ar, size_a);
 
     /* printf("%d\n", stack_a[0]);
@@ -40,7 +40,7 @@ int main(int ac, char **av)
     if (size_b > 0)
      printf(" %d", stack_b[0]);*/
      
-    /*
+    
     while (i < size_a)
      {
         printf ("Stack_A[%d] = %d\n", i, stack_a[i]);
@@ -62,7 +62,7 @@ int main(int ac, char **av)
      {
         printf ("Stack_A[%d] = %d\n", i, stack_a[i]);
         i++;
-     }*/
+     }
 
     /*
     while (ar[i])

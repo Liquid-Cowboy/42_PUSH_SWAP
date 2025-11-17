@@ -2,25 +2,32 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = push_swap_lib.a
+NAME = push_swap
 
-SRCS = push_swap_ops.c push_swap_split.c push_swap_utils.c
+FTPRINTF = ft_printf/libftprintf.a
+
+SRCS = push_swap_ops.c push_swap_split.c push_swap_utils.c  push_swap.c
 
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME) : $(OBJS)
-	ar rcs $@ $^
+$(NAME) : $(OBJS) $(FTPRINTF)
+	$(CC) $(CFLAGS) $^ -o $@ 
+
+$(FTPRINTF) :
+	$(MAKE) -C ft_printf/
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -g
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	rm -f $(OBJS)
+	$(MAKE) -C ft_printf/ clean
 
 fclean : clean
 	rm -f $(NAME)
+	$(MAKE) -C ft_printf/ fclean
 
 re: fclean all
 
