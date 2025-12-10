@@ -1,0 +1,27 @@
+void    push(t_stack_node **a, t_stack_node **b)
+{
+    t_stack_node *to_push;
+
+    if (!a || !*a)
+        return ;
+    to_push = *a;
+    *a = (*a)->next;
+    if (*a)
+        (*a)->prev = NULL;
+    if (*b)
+        (*b)->prev = to_push;
+    to_push->next = *b;
+    *b = to_push;
+}
+
+void    pa(t_stack_node **a, t_stack_node **b)
+{
+    push(b, a);
+    ft_printf("pa\n");
+}
+
+void    pb(t_stack_node **a, t_stack_node **b)
+{
+    push(a, b);
+    ft_printf("pb\n");
+}

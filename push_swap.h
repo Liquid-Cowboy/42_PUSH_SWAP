@@ -3,10 +3,21 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <limits.h>
 #include "ft_printf/ft_printf.h"
 
-#define INT_MAX 2147483647
-#define INT_MIN -2147483648
+typedef struct s_stack_node
+{
+	int					value;
+	int					current_position;
+	int					final_index;
+	int					push_price;
+	bool				above_median;
+	bool				cheapest;
+	struct s_stack_node	*target_node;
+	struct s_stack_node	*next;
+	struct s_stack_node	*prev;
+}				t_stack_node;	
 
 // split
 
@@ -21,30 +32,29 @@ long    ft_atol(char *str);
 int     repeats(int nbr, int i, char **ar);
 int     ft_is_digit(char *str);
 char   **cat_array(char **ar, char **src);
-int    *create_first_stack(char **ar, int size); //creates first stack_a
+int      repeats(long nbr, int i, char **ar);
+int         ft_is_digit(char *str);
+void         append_node(t_stack_node **stack, int nbr);
+t_stack_node *init_stack(char **ar);
+t_stack_node find_last_node(t_stack_node *stack);
+int stack_len(t_stack_node *stack);
 
-// ops
-void    swap_ints(int *stack, int i);
+//swap
+void    swap(t_stack_node **head);
+void    sa(t_stack_node **a);
+void    sb(t_stack_node **b);
+void    ss(t_stack_node **a, t_stack_node **b);
 
-int     *create_stack_a(int *size_a, int *stack_a);
-int     *create_stack_b(int *size_b, int *stack_a, int *stack_b);
-void    push_int(int **stack_a, int **stack_b, int *size_a, int *size_b);
+//rotate
+void    rotate(t_stack_node **head);
+void    ra(t_stack_node **a);
+void    rb(t_stack_node **b);
+void    rr(t_stack_node **a, t_stack_node **b);
 
-void    rotate_stack(int *stack, int size);
-void    reverse_rotate_stack(int *stack, int size);
+//push
+void    push(t_stack_node **a, t_stack_node **b);
+void    pa(t_stack_node **a, t_stack_node **b);
+void    pb(t_stack_node **a, t_stack_node **b);
 
-// shortcuts
-
-void sa(int *stack_a, int size_a);
-void sb(int *stack_b, int size_b);
-void ss(int *stack_a, int *stack_b, int size_a, int size_b);
-void pa(int **stack_a, int **stack_b, int *size_a, int *size_b);
-void pb(int **stack_a, int **stack_b, int *size_a, int *size_b);
-void ra(int *stack_a, int size_a);
-void rb(int *stack_b, int size_b);
-void rr(int *stack_a, int *stack_b, int size_a, int size_b);
-void rra(int *stack_a, int size_a);
-void rrb(int *stack_b, int size_b);
-void rrr(int *stack_a, int *stack_b, int size_a, int size_b);
 
 #endif

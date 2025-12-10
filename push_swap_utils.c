@@ -52,97 +52,78 @@ long ft_atol(char *str)
     return (nbr);
 }
 
-int repeats(int nbr, int i, char **ar)
+void append_node(t_stack_node **stack, int nbr)
 {
-    int j = 0;
+    t_stack_node *node;
+    t_stack_node *last_node;
 
-    while (j < i)
+    if (!stack)
+        return ;
+    node = (t_stack_node *)malloc(sizeof(t_stack_node));
+    if (!node)
+        return ;
+    node->value = nbr;
+    node->next = NULL;
+    if (!*stack)
     {
-        if (ft_atol(ar[j]) == nbr)
-            return (1);
-        j++;
+        *stack = node;
+        node->prev = NULL;
     }
-    return (0);
-}
-
-int ft_is_digit(char *str)
-{
-    if (*str == '-' || *str == '+')
-        str++;
-    if (*str >= '0' && *str <= '9')
-        return (1);
     else
-        return (0);
+    {
+        last_node = find_last_node(*stack);
+        last_node->next = node;
+        node->prev = last_node;
+    }
 }
 
-int *create_first_stack(char **ar, int size)
+t_stack_node *init_stack(char **ar)
 {
-    int *stack;
     int i;
     long nbr;
+    t_stack_node *new;
+
     i = 0;
-    stack = (int*) malloc (sizeof(int) * size);
-    if (!stack)
-        return (NULL);
-    while (i < size)
+    new = NULL;
+    while(ar[i])
     {
-        if (!(ft_is_digit(ar[i])))
-        {
-            free (stack);
-            write(1, "error", 5);
-            return (NULL);
-        }        
+        if (!ft_is_digit(ar[i]))
+            error_clear(new, ar);
         nbr = ft_atol(ar[i]);
         if (nbr > INT_MAX || nbr < INT_MIN || repeats(nbr, i, ar))
-        {
-            free (stack);
-            write(1, "error", 5);
-            return (NULL);
-        }
-        stack[i] = (int)nbr;
+            error_clear(new, ar);
+        append_node(&new, (int)nbr);
         i++;
     }
-    return (stack);
 }
 
-int stack_is_sorted(int *stack, int size)
+t_stack_node find_last_node(t_stack_node *stack)
+{
+    if (!stack)
+        return (NULL);
+    while(stack->next != NULL)
+        stack = stack->next;
+    return(stack);
+}
+
+int stack_len(t_stack_node *stack)
 {
     int i;
 
-    i = 0;
-    while ((i + 1) < size)
+    if (!stack)
+        return (0);
+    i = 1;
+    while (stack->next)
     {
-        if (stack[i] > stack[i + 1])
-            return (0)
+        stack = stack->next;
         i++;
     }
-    return (1);
+    return (i);
 }
 
-int find_highest(int *stack, int size)
+void tiny_sort(t_stack_node **head)
 {
-    int i;
-    int highest_index 
-    
-    highest_index = 0;
-    i = 0;
-    while ((i + 1) < size)
-    {
-        if(stack[i + 1] > stack[i])
-            highest_index = stack[i + 1];
-        i++;
-    }
-    return (highest_index);
-}
-
-tiny_sort(int *stack, int size)
-{
-    highest_index = find_highest(stack, size);
-    if (highest_index == 0)
-        ra(stack, size);
-    elif (highest_index == 1)
-        rra(stack, size);
-    if (stack[0] > stack[1])
-        sa(stack, size);
-
+    if (stack_len(head) != 3)
+        return ;
+    if
 }

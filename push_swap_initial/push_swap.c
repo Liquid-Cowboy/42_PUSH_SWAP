@@ -5,35 +5,43 @@
 #include <stdio.h>
 int main(int ac, char **av)
 {
-    t_stack_node *a;
-    t_stack_node *b;
+    int size_a;
+    //int size_b;
+    int *stack_a;
+    //int *stack_b;
     char **ar;
     int i;
     
-    a = NULL;
-    b = NULL;
+    i = 0;
+   // size_b = 0;
+    //stack_b = NULL;
+
     if (ac == 1 || (ac == 2 && !av[1][0]))
         return (1);
-    i = 1;
+    size_a = 1;
     // we'll split the numbers in the first argument
-    ar = ft_split(av[i]);
-    i++;
+    ar = ft_split(av[size_a]);
+    size_a++;
     // ar now contains the numbers in the first argument (1 per string) and we'll now start concatenating on index 2 the rest of the arguments
-    while (av[i])
-        ar = cat_array(ar, ft_split(av[i++]));
-    a = init_stack(ar);
-    if (a == NULL)
+    while (av[size_a])
+        ar = cat_array(ar, ft_split(av[size_a++]));
+    size_a = 0;
+    while (ar[size_a])
+        size_a++;
+    // since arrays don't have a null terminator, size_a stands for the total number of elements in the array
+   // size_b = 0;
+    stack_a = create_first_stack(ar, size_a);
+    if (stack_a == NULL)
     {
         free_all(ar);
         return (1);
     }
     // now we'll sort the stack
-    if (!stack_is_sorted(a))
+    if (!stack_is_sorted(stack_a, size_a))
         {
             if (size_a == 3)
-                tiny_sort(&a);
-            else
-                push_swap(a, b);
+                tiny_sort(stack_a, size_a);
+            
         }
     while (stack_a[i])
         ft_printf("%d\n", stack_a[i++]);
