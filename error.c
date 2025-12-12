@@ -2,8 +2,8 @@
 
 void    clear_stack(t_stack_node **stack)
 {
-    t_stach_node *temp;
-    t_stach_node *current;
+    t_stack_node *temp;
+    t_stack_node *current;
 
     if (!stack || !*stack)
         return;
@@ -17,7 +17,7 @@ void    clear_stack(t_stack_node **stack)
     *stack = NULL;
 }
 
-void error_clear(t_stach_node **stack, char **args)
+void error_clear(t_stack_node **stack, char **args)
 {
     write (2, "Error\n", 6);
     clear_stack(stack);

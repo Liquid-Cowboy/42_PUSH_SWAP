@@ -32,10 +32,10 @@ char   **cat_array(char **ar, char **src)
     return (dest);
 }
 
-long ft_atol(char *str)
+long long ft_atol(char *str)
 {
     int     i = 0;
-    long    nbr = 0;
+    long long    nbr = 0;
     int     is_negative = 0;
 
     if (str[i] == '+')
@@ -80,7 +80,7 @@ void append_node(t_stack_node **stack, int nbr)
 t_stack_node *init_stack(char **ar)
 {
     int i;
-    long nbr;
+    long long nbr;
     t_stack_node *new;
 
     i = 0;
@@ -88,16 +88,17 @@ t_stack_node *init_stack(char **ar)
     while(ar[i])
     {
         if (!ft_is_digit(ar[i]))
-            error_clear(new, ar);
+            error_clear(&new, ar);
         nbr = ft_atol(ar[i]);
         if (nbr > INT_MAX || nbr < INT_MIN || repeats(nbr, i, ar))
-            error_clear(new, ar);
+            error_clear(&new, ar);
         append_node(&new, (int)nbr);
         i++;
     }
+    return (new);
 }
 
-t_stack_node find_last_node(t_stack_node *stack)
+t_stack_node *find_last_node(t_stack_node *stack)
 {
     if (!stack)
         return (NULL);
@@ -121,9 +122,43 @@ int stack_len(t_stack_node *stack)
     return (i);
 }
 
-void tiny_sort(t_stack_node **head)
+int stack_is_sorted(t_stack_node *stack)
 {
-    if (stack_len(head) != 3)
+    while(stack->next)
+    {
+        if (!stack)
+            return (1);
+        if(stack->value > stack->next->value)
+            return (0);
+        stack = stack->next;
+    }
+    return (1);
+}
+
+t_stack_node *find_highest(t_stack_node *stack)
+{
+    t_stack_node *to_deliver;
+
+    if (!stack)
+        return (NULL);
+    to_deliver = stack;
+    while (stack->next)
+    {
+        if (to_deliver->value < stack->value)
+            to_deliver = stack;
+        stack = stack->next;
+    }
+    return (to_deliver);
+}
+
+void tiny_sort(t_stack_node **stack)
+{
+    if (stack_len(*stack) != 3)
         return ;
-    if
+    if (*stack == find_highest(*stack))
+        ra(stack);
+    else if ((*stack)->next == find_highest(*stack))
+        rra(stack);
+    if((*stack)->value > (*stack)->next->value)
+        sa(stack);
 }

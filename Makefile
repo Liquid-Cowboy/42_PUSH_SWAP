@@ -6,20 +6,20 @@ NAME = push_swap
 
 FTPRINTF = ft_printf/libftprintf.a
 
-SRCS = push_swap_ops.c push_swap_split.c push_swap_utils.c  push_swap.c
+SRCS = main.c error.c push_ops.c push_swap.c reverse_rotate_ops.c rotate_ops.c split.c swap_ops.c utils.c
 
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME) : $(OBJS) $(FTPRINTF)
-	$(CC) $(CFLAGS) $^ -o $@ 
+	$(CC) $(CFLAGS) $^ -o $@ -g
 
 $(FTPRINTF) :
 	$(MAKE) -C ft_printf/
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -g
 
 clean :
 	rm -f $(OBJS)

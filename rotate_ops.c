@@ -1,10 +1,12 @@
+#include "push_swap.h"
+
 void    rotate(t_stack_node **head)
 {
     t_stack_node *last;
 
     if (!head || !*head || stack_len(*head) <= 1)
         return;   
-    *head = (*head)->next
+    *head = (*head)->next;
     last = find_last_node(*head);
     last->next = (*head)->prev;
     (*head)->prev->prev = last;

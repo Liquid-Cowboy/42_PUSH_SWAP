@@ -41,7 +41,8 @@ int main(int ac, char **av)
         {
             if (size_a == 3)
                 tiny_sort(stack_a, size_a);
-            
+            else
+                push_swap(stack_a, stack_b, size_a, size b);
         }
     while (stack_a[i])
         ft_printf("%d\n", stack_a[i++]);

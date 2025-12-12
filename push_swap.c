@@ -1,43 +1,196 @@
 #include "push_swap.h"
 
-
-
-#include <stdio.h>
-int main(int ac, char **av)
+void    set_position(t_stack_node *stack)
 {
-    t_stack_node *a;
-    t_stack_node *b;
-    char **ar;
     int i;
-    
-    a = NULL;
-    b = NULL;
-    if (ac == 1 || (ac == 2 && !av[1][0]))
-        return (1);
-    i = 1;
-    // we'll split the numbers in the first argument
-    ar = ft_split(av[i]);
-    i++;
-    // ar now contains the numbers in the first argument (1 per string) and we'll now start concatenating on index 2 the rest of the arguments
-    while (av[i])
-        ar = cat_array(ar, ft_split(av[i++]));
-    a = init_stack(ar);
-    if (a == NULL)
+
+    i = 0;
+    if (!stack)
+        return ;
+    while (stack)
     {
-        free_all(ar);
-        return (1);
+        stack->current_position = i;
+        if (i <= (stack_len(stack) / 2))
+            stack->above_median = true;
+        else
+            stack->above_median = false;
+        stack = stack->next;
+        i++;
     }
-    // now we'll sort the stack
-    if (!stack_is_sorted(a))
+}
+
+t_stack_node    *find_smallest(t_stack_node *stack)
+{
+    int i;
+    t_stack_node *to_deliver;
+
+    if (!stack)
+        return (NULL);
+    i = INT_MAX;
+    while(stack)
+    {
+        if (i > stack->value)
         {
-            if (size_a == 3)
-                tiny_sort(&a);
-            else
-                push_swap(a, b);
+            i = stack->value;
+            to_deliver = stack;
         }
-    while (stack_a[i])
-        ft_printf("%d\n", stack_a[i++]);
-    //stack_a contains now all the arguments turned into ints ... we can now free the double array
-    free_all(ar);
-    return (0);
+        stack = stack->next;
+    }
+    return (to_deliver);
+}
+
+void    set_target_node(t_stack_node *a, t_stack_node *b)
+{
+    t_stack_node    *best_match;
+    t_stack_node    *current;
+    int smallest;
+
+    while (b)
+    {
+        smallest = INT_MAX;
+        best_match = a;
+        current = a;
+        while (current)
+        {
+            if ((current->value > b->value) && (current->value < smallest))
+            {
+                best_match = current;
+                smallest = current->value;
+            }
+            current = current->next;
+        }
+        if (smallest == INT_MAX) //if the given node is higher than any node in a, it will be put before the smallest (we can then rotate the stack until it is set at the bottom)
+            b->target_node = find_smallest(a);
+        else
+            b->target_node = best_match;
+        b = b->next;
+    }
+}
+
+void    set_price(t_stack_node *a, t_stack_node *b)
+{
+    while (b)
+    {
+        if (b->above_median)
+        {
+            if(b->target_node->above_median)
+                b->push_price = b->current_position + b->target_node->current_position;
+            else
+                b->push_price = b->current_position + (stack_len(a) - b->target_node->current_position);
+        }
+        else
+        {
+            if(b->target_node->above_median)
+                b->push_price = (stack_len(b) - b->current_position) + b->target_node->current_position;
+            else
+                b->push_price = (stack_len(b) - b->current_position) + (stack_len(a) - b->target_node->current_position);
+        }
+        b = b->next;
+    }
+}
+
+void    set_cheapest(t_stack_node *stack)
+{
+    t_stack_node    *cheaper;
+    t_stack_node    *i;
+
+    cheaper = stack;
+    i = stack;
+    while(i)
+    {
+        if (cheaper->push_price > i->push_price)
+            cheaper = i;
+        i = i->next;
+    }
+    while(stack)
+    {
+        if (cheaper->push_price == stack->push_price)
+            stack->cheapest = true;
+        else
+            stack->cheapest = false;
+        stack = stack->next;
+    }
+}
+
+t_stack_node    *find_cheapest(t_stack_node *stack)
+{
+    while (!stack->cheapest)
+        stack = stack->next;
+    return (stack);
+}
+
+void    rotate_loop(t_stack_node **a, t_stack_node **b, t_stack_node *cheapest)
+{
+    while ((cheapest->target_node != *a) && (cheapest != *b))
+        rr(a, b);
+    set_position(*a);
+    set_position(*b);
+}
+
+void    reverse_rotate_loop(t_stack_node **a, t_stack_node **b, t_stack_node *cheapest)
+{
+    while ((cheapest->target_node != *a) && (cheapest != *b))
+        rrr(a, b);
+    set_position(*a);
+    set_position(*b);
+}
+
+void    set_order(t_stack_node **stack, t_stack_node *top_node, char c)
+{
+    while (top_node != *stack)
+    {
+        if (top_node->above_median)
+            {
+                if (c == 'a')
+                    ra(stack);
+                else
+                    rb(stack);
+            }
+        else
+            {
+                if (c == 'a')
+                    rra(stack);
+                else
+                    rrb(stack);
+            }
+    }
+}
+
+void    sort_al(t_stack_node **a, t_stack_node **b)
+{
+    t_stack_node *cheapest;
+
+    cheapest = find_cheapest(*b);
+    if (cheapest->above_median && cheapest->target_node->above_median)
+        rotate_loop(a, b, cheapest);
+    else if (!cheapest->above_median && !cheapest->target_node->above_median)
+        reverse_rotate_loop(a, b, cheapest);
+    set_order(a, cheapest->target_node, 'a');
+    set_order(b, cheapest, 'b');
+    pa(a, b);            
+}
+
+ void   init_nodes(t_stack_node *a, t_stack_node *b)
+ {
+    set_position(a);
+    set_position(b);
+    set_target_node(a, b);
+    set_price(a, b);
+    set_cheapest(b);
+ }
+
+void    push_swap(t_stack_node **a, t_stack_node **b)
+{
+    if (!a || !*a)
+        return ;
+    while (stack_len(*a) > 3)
+        pb(a, b);
+    tiny_sort(a);
+    while (*b)
+    {
+        init_nodes(*a, *b);
+        sort_al(a, b);
+    }
+    set_position(*a);
+    set_order(a, find_smallest(*a), 'a');
 }
