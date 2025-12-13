@@ -6,7 +6,7 @@ NAME = push_swap
 
 FTPRINTF = ft_printf/libftprintf.a
 
-SRCS = main.c error.c push_ops.c push_swap.c reverse_rotate_ops.c rotate_ops.c split.c swap_ops.c utils.c
+SRCS = main.c push_swap.c split.c error.c utils.c ops/swap_ops.c ops/push_ops.c ops/reverse_rotate_ops.c ops/rotate_ops.c  
 
 OBJS = $(SRCS:.c=.o)
 
