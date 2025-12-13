@@ -178,13 +178,81 @@ void    sort_al(t_stack_node **a, t_stack_node **b)
     set_price(a, b);
     set_cheapest(b);
  }
+ int   check_sorted(int *sorted_stack, int len)
+ {
+    int i;
+
+    i = 0;
+    while ((i + 1) < len)
+    {
+        if (sorted_stack[i] > sorted_stack[i + 1])
+            return (0);
+        i++;
+    }
+    return (1);
+ }
+
+ void   quick_sort(int *sorted_stack, int len)
+ {
+    int i;
+    int temp;
+
+    i = 0;
+    while(!check_sorted(sorted_stack, len))
+    {
+        i = 0;
+        while((i + 1) < len)
+        {
+            if (sorted_stack[i] > sorted_stack[i + 1])
+            {
+                temp = sorted_stack[i];
+                sorted_stack[i] = sorted_stack[i + 1];
+                sorted_stack[i + 1] = temp;
+            }
+            i++;
+        }
+    }
+ }
+
+int median_value(t_stack_node *a)
+{
+    int *sorted_stack;
+    int i;
+    int value;
+    int len;
+
+    i = 0;
+    len = stack_len(a);
+    sorted_stack = malloc(len * (sizeof(int)));
+    if (!sorted_stack)
+        return (0);
+    while(i < len)
+    {
+        sorted_stack[i++] = a->value;
+        a = a->next;
+    }
+    quick_sort(sorted_stack, len);
+    value = sorted_stack[len / 2];
+    free (sorted_stack);
+    return(value);
+}
+
 
 void    push_swap(t_stack_node **a, t_stack_node **b)
 {
+    int median;
+
     if (!a || !*a)
         return ;
+    median = median_value(*a);
+    if (median == 0)
+        return ;
     while (stack_len(*a) > 3)
+    {
         pb(a, b);
+        if ((stack_len(*b) > 1) && ((*b)->value > median))
+        rb(b);
+    }
     tiny_sort(a);
     while (*b)
     {

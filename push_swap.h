@@ -80,4 +80,10 @@ void    push_swap(t_stack_node **a, t_stack_node **b);
 t_stack_node    *find_smallest(t_stack_node *stack);
 t_stack_node    *find_cheapest(t_stack_node *stack);
 
+//optimization
+int   check_sorted(int *sorted_stack, int len);
+void   quick_sort(int *sorted_stack, int len);
+int median_value(t_stack_node *a);
+
+
 #endif
