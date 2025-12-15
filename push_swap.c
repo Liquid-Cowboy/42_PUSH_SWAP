@@ -3,14 +3,14 @@
 void    set_position(t_stack_node *stack)
 {
     int i;
-
+    int median;
+    
+    median = stack_len(stack) / 2;
     i = 0;
-    if (!stack)
-        return ;
     while (stack)
     {
         stack->current_position = i;
-        if (i <= (stack_len(stack) / 2))
+        if (i <= median)
             stack->above_median = true;
         else
             stack->above_median = false;
@@ -37,6 +37,22 @@ t_stack_node    *find_smallest(t_stack_node *stack)
         stack = stack->next;
     }
     return (to_deliver);
+}
+
+int    find_next(t_stack_node *stack, int prev)
+{
+    int next;
+
+    next = INT_MAX;
+    while(stack)
+    {
+        if (prev < stack->value && stack->value < next)
+        {
+            next = stack->value;
+        }
+        stack = stack->next;
+    }
+    return (next);
 }
 
 void    set_target_node(t_stack_node *a, t_stack_node *b)
@@ -69,6 +85,11 @@ void    set_target_node(t_stack_node *a, t_stack_node *b)
 
 void    set_price(t_stack_node *a, t_stack_node *b)
 {
+    int len_a;
+    int len_b;
+
+    len_a = stack_len(a);
+    len_b = stack_len(b);
     while (b)
     {
         if (b->above_median)
@@ -76,14 +97,14 @@ void    set_price(t_stack_node *a, t_stack_node *b)
             if(b->target_node->above_median)
                 b->push_price = b->current_position + b->target_node->current_position;
             else
-                b->push_price = b->current_position + (stack_len(a) - b->target_node->current_position);
+                b->push_price = b->current_position + (len_a - b->target_node->current_position);
         }
         else
         {
             if(b->target_node->above_median)
-                b->push_price = (stack_len(b) - b->current_position) + b->target_node->current_position;
+                b->push_price = (len_b - b->current_position) + b->target_node->current_position;
             else
-                b->push_price = (stack_len(b) - b->current_position) + (stack_len(a) - b->target_node->current_position);
+                b->push_price = (len_b - b->current_position) + (len_a - b->target_node->current_position);
         }
         b = b->next;
     }
@@ -156,7 +177,7 @@ void    set_order(t_stack_node **stack, t_stack_node *top_node, char c)
     }
 }
 
-void    sort_al(t_stack_node **a, t_stack_node **b)
+void    move_nodes(t_stack_node **a, t_stack_node **b)
 {
     t_stack_node *cheapest;
 
@@ -178,86 +199,66 @@ void    sort_al(t_stack_node **a, t_stack_node **b)
     set_price(a, b);
     set_cheapest(b);
  }
- int   check_sorted(int *sorted_stack, int len)
- {
-    int i;
 
-    i = 0;
-    while ((i + 1) < len)
+ void   assign_index(t_stack_node *stack)
+ {
+    int lowest;
+    int i;
+    t_stack_node *current;
+
+    lowest = find_smallest(stack)->value;
+    while (i < stack_len(stack))
     {
-        if (sorted_stack[i] > sorted_stack[i + 1])
-            return (0);
+        current = stack;
+        while (current)
+        {
+            if (current->value == lowest)
+            {
+                current->current_position = i;
+                lowest = find_next(stack, lowest);
+                break ;
+            }
+            current = current->next;
+        }
         i++;
     }
-    return (1);
  }
 
- void   quick_sort(int *sorted_stack, int len)
- {
-    int i;
-    int temp;
-
-    i = 0;
-    while(!check_sorted(sorted_stack, len))
-    {
-        i = 0;
-        while((i + 1) < len)
-        {
-            if (sorted_stack[i] > sorted_stack[i + 1])
-            {
-                temp = sorted_stack[i];
-                sorted_stack[i] = sorted_stack[i + 1];
-                sorted_stack[i + 1] = temp;
-            }
-            i++;
-        }
-    }
- }
-
-int median_value(t_stack_node *a)
+void    initial_push(t_stack_node **a, t_stack_node **b, int limit, int chunk)
 {
-    int *sorted_stack;
-    int i;
-    int value;
-    int len;
-
-    i = 0;
-    len = stack_len(a);
-    sorted_stack = malloc(len * (sizeof(int)));
-    if (!sorted_stack)
-        return (0);
-    while(i < len)
+    while (stack_len(*a) > 3)
     {
-        sorted_stack[i++] = a->value;
-        a = a->next;
+        if ((*a)->current_position < limit)
+            pb(a, b);
+        else
+        {
+            ra(a);
+            if (stack_len(*b) > 1 && (*b)->current_position > (limit - chunk / 2))
+                rb(b);
+        }
+        if ((*b)->current_position == limit)
+            limit += chunk;
     }
-    quick_sort(sorted_stack, len);
-    value = sorted_stack[len / 2];
-    free (sorted_stack);
-    return(value);
 }
-
-
 void    push_swap(t_stack_node **a, t_stack_node **b)
 {
-    int median;
+    int chunk;
+    int limit;
 
     if (!a || !*a)
         return ;
-    median = median_value(*a);
-    if (median == 0)
-        return ;
-    while (stack_len(*a) > 3)
-    {
-        pb(a, b);
-        if ((stack_len(*b) > 1) && ((*b)->value > median))
-        rb(b);
-    }
+    assign_index(*a);
+    if (stack_len(*a) <= 100)
+        chunk = 15;
+    if (stack_len(*a) <= 500)
+        chunk = 25;
+    limit = chunk;
+    initial_push(a, b, limit, chunk);
     tiny_sort(a);
     while (*b)
     {
         init_nodes(*a, *b);
-        sort_al(a, b);
+        move_nodes(a, b);
     }
     set_position(*a);
     set_order(a, find_smallest(*a), 'a');
