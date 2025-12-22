@@ -1,34 +1,63 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mnogueir <mnogueir@student.42porto.com>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/12/22 11:39:22 by mnogueir          #+#    #+#              #
+#    Updated: 2025/12/22 11:39:22 by mnogueir         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I. -I srcs
 
 NAME = push_swap
 
-FTPRINTF = ft_printf/libftprintf.a
+FT_PRINTF = $(FT_PRINTF_DIR)libftprintf.a
 
-SRCS = main.c push_swap.c split.c error.c utils.c ops/swap_ops.c ops/push_ops.c ops/reverse_rotate_ops.c ops/rotate_ops.c  
+FT_PRINTF_DIR = srcs/ft_printf/
 
-OBJS = $(SRCS:.c=.o)
+SRCS_DIR = srcs/push_swap
 
-all: $(NAME)
+OBJS_DIR = objs
 
-$(NAME) : $(OBJS) $(FTPRINTF)
-	$(CC) $(CFLAGS) $^ -o $@ -g
+SRCS = $(shell find $(SRCS_DIR) -type f -name '*.c')
 
-$(FTPRINTF) :
-	$(MAKE) -C ft_printf/
+OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -g
+RM = rm -rf
+
+all: $(NAME) $(OBJS_DIR)
+
+$(NAME) : $(OBJS) $(FT_PRINTF)
+	@$(CC) $(CFLAGS) $^ -o $@ -g
+
+$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@ -g
+
+$(FT_PRINTF) :
+	@$(MAKE) -C srcs/ft_printf/
 
 clean :
-	rm -f $(OBJS)
-	$(MAKE) -C ft_printf/ clean
+	@$(RM) $(OBJS_DIR)
+	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
 
 fclean : clean
-	rm -f $(NAME)
-	$(MAKE) -C ft_printf/ fclean
+	@$(RM) $(NAME)
 
 re: fclean all
+
+500: $(NAME)
+	@./push_swap $(shell shuf -i 0-2000 -n 500) | wc -l
+
+100: $(NAME)
+	@./push_swap $(shell shuf -i 0-2000 -n 100) | wc -l
+
+10: $(NAME)
+	@./push_swap $(shell shuf -i 0-2000 -n 10) | wc -l
 
 .PHONY: all clean fclean re
