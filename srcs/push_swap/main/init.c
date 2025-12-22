@@ -22,9 +22,9 @@ void   init_nodes(t_stack_node *a, t_stack_node *b)
     {
         stack->index = i;
         if (i <= median)
-            stack->above_median = true;
+            stack->above_median = 1;
         else
-            stack->above_median = false;
+            stack->above_median = 0;
         stack = stack->next;
         i++;
     }
@@ -40,7 +40,7 @@ void    set_target_node(t_stack_node *a, t_stack_node *b)
     while (b)
     {
         smallest = INT_MAX;
-        best_match = a;
+        best_match = NULL;
         current = a;
         while (current)
         {
@@ -68,20 +68,13 @@ void    set_price(t_stack_node *a, t_stack_node *b)
     len_b = stack_len(b);
     while (b)
     {
-        if (b->above_median)
-        {
-            if(b->target_node->above_median)
-                b->push_price = b->index + b->target_node->index;
-            else
-                b->push_price = b->index + (len_a - b->target_node->index);
-        }
+        b->push_price = b->index;
+        if (!b->above_median)
+            b->push_price = len_b - b->index;
+        if (b->target_node->above_median)
+            b->push_price += b->target_node->index;
         else
-        {
-            if(b->target_node->above_median)
-                b->push_price = (len_b - b->index) + b->target_node->index;
-            else
-                b->push_price = (len_b - b->index) + (len_a - b->target_node->index);
-        }
+            b->push_price += len_a - b->target_node->index;
         b = b->next;
     }
 }
@@ -89,22 +82,22 @@ void    set_price(t_stack_node *a, t_stack_node *b)
 void    set_cheapest(t_stack_node *stack)
 {
     t_stack_node    *cheaper;
-    t_stack_node    *i;
+    t_stack_node    *current;
 
     cheaper = stack;
-    i = stack;
-    while(i)
+    current = stack;
+    while(current)
     {
-        if (cheaper->push_price > i->push_price)
-            cheaper = i;
-        i = i->next;
+        if (cheaper->push_price > current->push_price)
+            cheaper = current;
+        current = current->next;
     }
     while(stack)
     {
-        if (cheaper->push_price == stack->push_price)
-            stack->cheapest = true;
+        if(cheaper->push_price == stack->push_price)
+            stack->cheapest = 1;
         else
-            stack->cheapest = false;
+            stack->cheapest = 0;
         stack = stack->next;
     }
 }

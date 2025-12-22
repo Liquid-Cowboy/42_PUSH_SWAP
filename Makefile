@@ -11,42 +11,48 @@
 # **************************************************************************** #
 
 CC = cc
-
 CFLAGS = -Wall -Wextra -Werror -I. -I srcs
-
 NAME = push_swap
-
 FT_PRINTF = $(FT_PRINTF_DIR)libftprintf.a
-
 FT_PRINTF_DIR = srcs/ft_printf/
+MAKEFLAGS += --no-print-directory
 
 SRCS_DIR = srcs/push_swap
-
 OBJS_DIR = objs
 
 SRCS = $(shell find $(SRCS_DIR) -type f -name '*.c')
-
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
+
+GREEN       = \033[0;32m
+CYAN        = \033[0;36m
+YELLOW      = \033[0;33m
+RED         = \033[0;31m
+RESET       = \033[0m
+BOLD        = \033[1m
 
 RM = rm -rf
 
 all: $(NAME) $(OBJS_DIR)
 
 $(NAME) : $(OBJS) $(FT_PRINTF)
+	@echo "$(CYAN)🔗 Linking...$(BOLD)$(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $^ -o $@ -g
 
 $(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c
 	@mkdir -p $(dir $@)
+	@echo "$(YELLOW)⚙️  Compiling...$(RESET)$<"
 	@$(CC) $(CFLAGS) -c $< -o $@ -g
 
 $(FT_PRINTF) :
 	@$(MAKE) -C srcs/ft_printf/
 
 clean :
+	@echo "$(RED)🧹 Cleaning objects...$(RESET)"
 	@$(RM) $(OBJS_DIR)
 	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
 
 fclean : clean
+	@echo "$(RED)🗑  Removing binaries...$(RESET)"
 	@$(RM) $(NAME)
 
 re: fclean all

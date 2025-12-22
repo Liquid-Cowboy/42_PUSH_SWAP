@@ -12,8 +12,8 @@ typedef struct s_stack_node
 	int			value;
 	int			index;
 	int			push_price;
-	bool			above_median;
-	bool			cheapest;
+	int			above_median;
+	int			cheapest;
 	struct s_stack_node	*target_node;
 	struct s_stack_node	*next;
 	struct s_stack_node	*prev;
@@ -87,9 +87,7 @@ void    set_cheapest(t_stack_node *stack);
 //Main sorting phase.
 
 void    push_swap(t_stack_node **a, t_stack_node **b);
-void   assign_index(t_stack_node *stack);
-int    find_next(t_stack_node *stack, int prev);
-void    initial_push(t_stack_node **a, t_stack_node **b, int limit, int chunk);
+int get_average(t_stack_node *stack);
 void tiny_sort(t_stack_node **stack);
 void    move_nodes(t_stack_node **a, t_stack_node **b);
 void    rotate_loop(t_stack_node **a, t_stack_node **b, t_stack_node *cheapest);

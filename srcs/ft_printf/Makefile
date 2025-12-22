@@ -13,10 +13,8 @@ all : $(NAME)
 $(NAME) : $(OBJS)
 	@ar rcs $@ $^
 
-#ft_printf.o : ft_printf.c
-#	$(CC) $(CFLAGS) -c $^ -I. -o $@
-
 specs/%.o : specs/%.c
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $^ -I. -o $@
 
 clean :

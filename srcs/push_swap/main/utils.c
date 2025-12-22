@@ -77,7 +77,7 @@ t_stack_node *find_last_node(t_stack_node *stack)
 
 t_stack_node    *find_cheapest(t_stack_node *stack)
 {
-    while (!stack->cheapest)
+    while (stack && !stack->cheapest)
         stack = stack->next;
     return (stack);
 }
