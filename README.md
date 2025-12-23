@@ -86,6 +86,7 @@
 </table>
 <hr>
 </details>
+
 Ideally, the program should be implemented in such a way as to use the minimum amount of operations possible.  
 
 To achieve maximum project validation (100%) and eligibility for bonuses, the program must:
@@ -108,7 +109,7 @@ The program will display 'Error' whenever the arguments passed through standard 
 
 ### Bonus
 As a bonus, one can build a simple checker that outputs '<code>OK</code>' if the given set of instructions actually sorts the stack correctly, or '<code>KO</code>' otherwise. This checker must also display '<code>Error</code>' if no instructions are provided or if any of them are malformed.
-<br><br><br>
+<br><br>
 
 ## Instructions
 ### Base rules
@@ -140,14 +141,19 @@ As a bonus, one can build a simple checker that outputs '<code>OK</code>' if the
 </table>
 <br><br>
 Using <code>make</code> with targets <code>500</code>, <code>100</code>, or <code>10</code> will display the total number of operations executed by the program with the given number of random integers. This is done by using the command:
-
-<p align="center"><code>./push_swap $(shuf -i 0-2000 -n [number of integers]) | wc -l</code></p> 
+<br><br>
+<p align="center">
+    <code>./push_swap $(shuf -i 0-2000 -n [number of integers]) | wc -l</code>
+</p> 
 <br> 
 Whereas using <code>make</code> with targets <code>check_500</code>, <code>check_100</code>, or <code>check_10</code> will run the checker with random values, displaying '<b>OK</b>', '<b>KO</b>', or '<b>Error</b>' accordingly. This is done by using the command:
-<p align="center"><code>ARG=$(shuf -i 0-2000 -n [number of integers]); ./push_swap $ARG | ./checker $ARG</code> </p>
+<br><br>
+<p align="center">
+    <code>ARG=$(shuf -i 0-2000 -n [number of integers]); ./push_swap $ARG | ./checker $ARG</code>
+</p>
 <br>
 Alternatively, you can use both commands directly in the terminal with different ranges (replacing <code>0-2000</code> with any other limits) or different quantities of integers (replacing the <code>[number of integers]</code> field with any number).  
-<br><br><br>
+<br><br>
 
 ## How I did it
 
@@ -209,7 +215,7 @@ The stack should now be sorted. We'll confirm this by using the `get_next_line` 
 
 
 
-<br><br><br>
+<br><br>
 ## Resources
 
 - On the Turk algorithm: <a href="https://medium.com/@ayogun/push-swap-c1f5d2d41e97">Push Swap — A journey to find most efficient sorting algorithm </a><i>by A. Yigit Ogun;</i>
