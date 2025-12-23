@@ -2,6 +2,26 @@
 
 //Functions used in the conversion of arguments (as strings) to nodes in a linked list.
 
+t_stack_node    *handle_input(char **arg)
+{
+    int i;
+    char    **ar;
+    t_stack_node *stack;
+
+    i = 1;
+    // we'll split the numbers in the first argument
+    ar = ft_split(arg[i]);
+    // ar now contains the numbers in the first argument (1 per string) and we'll now start concatenating on index 2 the rest of the arguments
+    i++;
+    while (arg[i])
+        ar = cat_array(ar, ft_split(arg[i++]));
+    stack = init_stack(ar);
+    if (ar)
+        free_all(ar);
+    return (stack);
+}
+
+
 char   **cat_array(char **ar, char **src) //concatenates multiple inputs into a string array
 {
     int i = 0;

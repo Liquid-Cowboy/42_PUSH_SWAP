@@ -14,21 +14,24 @@ void    rotate(t_stack_node **head)
     (*head)->prev = NULL;
 }
 
-void    ra(t_stack_node **a)
+void    ra(t_stack_node **a, int print)
 {
     rotate(a);
-    ft_printf("ra\n");
+    if (print)
+        ft_printf("ra\n");
 }
 
-void    rb(t_stack_node **b)
+void    rb(t_stack_node **b, int print)
 {
     rotate(b);
-    ft_printf("rb\n");
+    if (print)
+        ft_printf("rb\n");
 }
 
-void    rr(t_stack_node **a, t_stack_node **b)
+void    rr(t_stack_node **a, t_stack_node **b, int print)
 {
     rotate(a);
     rotate(b);
-    ft_printf("rr\n");
+    if (print)
+        ft_printf("rr\n");
 }

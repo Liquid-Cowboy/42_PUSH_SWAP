@@ -58,6 +58,8 @@ void    free_all(char **ar)
 {
     char **ptr;
 
+    if(!ar)
+        return;
     ptr = ar;
     while(*ptr)
         free (*ptr++);

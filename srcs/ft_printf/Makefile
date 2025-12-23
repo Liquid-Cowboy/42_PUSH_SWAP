@@ -17,6 +17,10 @@ specs/%.o : specs/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $^ -I. -o $@
 
+%.o : %.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $^ -I. -o $@
+	
 clean :
 	@rm -f $(OBJS)
 

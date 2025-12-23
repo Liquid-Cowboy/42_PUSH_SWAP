@@ -37,7 +37,7 @@ t_stack_node *find_biggest(t_stack_node *stack)
     if (!stack)
         return (NULL);
     to_deliver = stack;
-    while (stack->next)
+    while (stack)
     {
         if (to_deliver->value < stack->value)
             to_deliver = stack;

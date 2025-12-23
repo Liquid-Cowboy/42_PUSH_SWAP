@@ -1,44 +1,42 @@
 #include "push_swap.h"
+/*
+void    print_stack(t_stack_node *stack)
+{
+    ft_printf("\nStack:\t");
+    while (stack)
+    {
+        ft_printf("%d\t", stack->value);
+        stack = stack->next;
+    }
+}*/
 
-
-
-#include <stdio.h>
 int main(int ac, char **av)
 {
     t_stack_node *a;
     t_stack_node *b;
-    char **ar;
-    int i;
     
     a = NULL;
     b = NULL;
     if (ac == 1 || (ac == 2 && !av[1][0]))
         return (1);
-    i = 1;
-    // we'll split the numbers in the first argument
-    ar = ft_split(av[i]);
-    i++;
-    // ar now contains the numbers in the first argument (1 per string) and we'll now start concatenating on index 2 the rest of the arguments
-    while (av[i])
-        ar = cat_array(ar, ft_split(av[i++]));
-    a = init_stack(ar);
+    
+    a = handle_input(av);
     if (a == NULL)
-    {
-        free_all(ar);
         return (1);
-    }
     // now we'll sort the stack
+    //print_stack(a);
     if (!stack_is_sorted(a))
         {
             if (stack_len(a) == 2)
-                sa(&a);
+                sa(&a, 1);
             if (stack_len(a) == 3)
-                tiny_sort(&a);
+                tiny_sort(&a, 1);
             else
-                push_swap(&a, &b);
-        } 
+                push_swap(&a, &b, 1);
+        }
+    //print_stack(a);
     //stack_a contains now all the arguments turned into ints ... we can now free the double array
     clear_stack(&a);
-    free_all(ar);
+    clear_stack(&b);
     return (0);
 }

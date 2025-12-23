@@ -16,14 +16,16 @@ void    push(t_stack_node **a, t_stack_node **b)
     *b = to_push;
 }
 
-void    pa(t_stack_node **a, t_stack_node **b)
+void    pa(t_stack_node **a, t_stack_node **b, int print)
 {
     push(b, a);
-    ft_printf("pa\n");
+    if (print)
+        ft_printf("pa\n");
 }
 
-void    pb(t_stack_node **a, t_stack_node **b)
+void    pb(t_stack_node **a, t_stack_node **b, int print)
 {
     push(a, b);
-    ft_printf("pb\n");
+    if (print)
+        ft_printf("pb\n");
 }
