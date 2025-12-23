@@ -139,6 +139,9 @@ As a bonus, one can build a simple checker that outputs '<code>OK</code>' if the
         <td>Does <b>fclean</b> and <b>all</b>.</td>
 </table>
 <br><br>
+
+### Execution shortcuts
+
 Using <code>make</code> with targets <code>500</code>, <code>100</code>, or <code>10</code> will display the total number of operations executed by the program with the given number of random integers. This is done by using the command:
 <br><br>
 <p align="center">
