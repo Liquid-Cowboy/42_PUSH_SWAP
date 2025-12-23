@@ -87,8 +87,7 @@
 <hr>
 </details>
 
-Ideally, the program should be implemented in such a way as to use the minimum amount of operations possible.  
-
+Ideally, the program should be implemented in such a way as to use the minimum amount of operations possible.
 To achieve maximum project validation (100%) and eligibility for bonuses, the program must:
  
 - Sort 100 random numbers in fewer than 700 operations.
@@ -144,7 +143,8 @@ Using <code>make</code> with targets <code>500</code>, <code>100</code>, or <cod
 <br><br>
 <p align="center">
     <code>./push_swap $(shuf -i 0-2000 -n [number of integers]) | wc -l</code>
-</p> 
+</p>
+<hr>
 <br> 
 Whereas using <code>make</code> with targets <code>check_500</code>, <code>check_100</code>, or <code>check_10</code> will run the checker with random values, displaying '<b>OK</b>', '<b>KO</b>', or '<b>Error</b>' accordingly. This is done by using the command:
 <br><br>
