@@ -11,22 +11,24 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I. -I srcs -I srcs/bonus
+CFLAGS = -Wall -Wextra -Werror -I. -I srcs -I srcs/bonus -I srcs/ft_printf
 NAME = push_swap
-FT_PRINTF = $(FT_PRINTF_DIR)libftprintf.a
-FT_PRINTF_DIR = srcs/ft_printf/
 MAKEFLAGS += --no-print-directory
 
 SRCS_DIR = srcs/push_swap
 OBJS_DIR = objs
 
-COMMON_SRCS = $(shell find $(SRCS_DIR) -type f -name '*.c' ! -name 'main.c')
+COMMON_SRCS = $(shell find srcs -type f -name '*.c' \
+                ! -path 'srcs/bonus/*' \
+                ! -name 'checker.c' \
+				! -path 'srcs/push_swap/main/main.c')
 SRCS = $(COMMON_SRCS) $(SRCS_DIR)/main/main.c
-OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
+OBJS = $(patsubst %.c, $(OBJS_DIR)/%.o, $(SRCS))
 
 BONUS_NAME = checker
-BONUS_SRCS = $(COMMON_SRCS) srcs/bonus/checker.c
-GNL = srcs/bonus/get_next_line.a
+BONUS_SRCS = $(COMMON_SRCS) srcs/bonus/checker.c $(GNL_FILES)
+BONUS_OBJS = $(patsubst %.c, $(OBJS_DIR)/%.o, $(BONUS_SRCS))
+GNL_FILES = srcs/bonus/get_next_line_utils.c srcs/bonus/get_next_line.c
 
 GREEN       = \033[0;32m
 CYAN        = \033[0;36m
@@ -39,29 +41,25 @@ RM = rm -rf
 
 all: $(NAME) $(OBJS_DIR)
 
-$(NAME) : $(OBJS) $(FT_PRINTF)
+$(NAME) : $(OBJS)
 	@echo "$(CYAN)🔗  Linking...$(BOLD)$(NAME)$(RESET)"
 	@$(CC) $(CFLAGS) $^ -o $@ -g
 
-$(OBJS_DIR)/%.o : $(SRCS_DIR)/%.c
+$(OBJS_DIR)/%.o : %.c
 	@mkdir -p $(dir $@)
 	@echo "$(YELLOW)⚙️  Compiling...$(RESET)$<"
 	@$(CC) $(CFLAGS) -c $< -o $@ -g
 
-$(FT_PRINTF) :
-	@echo "$(YELLOW)🖨️  Compiling ft_printf..."
-	@$(MAKE) -C srcs/ft_printf/
-
 bonus : $(BONUS_NAME)
 
-$(BONUS_NAME) : $(BONUS_SRCS) $(GNL) $(FT_PRINTF)
-	@echo "$(YELLOW)➕  Compiling bonus..."
+$(BONUS_NAME) : $(BONUS_OBJS)
+	@echo "$(YELLOW)➕  Compiling bonus...$(RESET)"
 	@$(CC) $(CFLAGS) $^ -o $@ -g
+
 
 clean :
 	@echo "$(RED)🧹  Cleaning objects...$(RESET)"
 	@$(RM) $(OBJS_DIR)
-	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
 
 fclean : clean
 	@echo "$(RED)🗑   Removing binaries...$(RESET)"

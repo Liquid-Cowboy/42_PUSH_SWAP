@@ -1,8 +1,8 @@
 <i>This project has been created as part of the 42 curriculum by mnogueir. </i>
 
-# 🥞 Push Swap
+# Push Swap
 
-## 📖 Description
+## Description
 <b>Push Swap</b> is a program that takes a stack of integers (numbers from -2147483648 to 2147483647) and sorts them, using two stacks and a limited set of operations. Once the integers to be sorted are passed as arguments through the standard input, these are initially stored in <b>stack a</b>. The empty <b>stack b</b> can then serve as temporary storage to facilitate sorting operations. At the end of the program, all items should return to <b>stack a</b>, now sorted in ascending order. During execution, the program will display each instruction used in shorthand (ex. `sa`, for swap a), followed by a newline.
 <br>The valid operations avaiable for the program are as follows:
 
@@ -110,7 +110,7 @@ The program will display 'Error' whenever the arguments passed through standard 
 As a bonus, one can build a simple checker that outputs '<code>OK</code>' if the given set of instructions actually sorts the stack correctly, or '<code>KO</code>' otherwise. This checker must also display '<code>Error</code>' if no instructions are provided or if any of them are malformed.
 <br><br>
 
-## 📋 Instructions
+## Instructions
 ### Base rules
 <h4><code>Make</code></h4>
 <hr>
@@ -158,7 +158,7 @@ Whereas using <code>make</code> with targets <code>check_500</code>, <code>check
 Alternatively, you can use both commands directly in the terminal with different ranges (replacing <code>0-2000</code> with any other limits) or different quantities of integers (replacing the <code>[number of integers]</code> field with any number).  
 <br><br>
 
-## 👨🏻‍🏫 How I did it
+## How I did it
 
 ### Handling the input
 
@@ -219,7 +219,7 @@ The stack should now be sorted. We'll confirm this by using the `get_next_line` 
 
 
 <br><br>
-## 📚 Resources
+## Resources
 
 - On the Turk algorithm: <a href="https://medium.com/@ayogun/push-swap-c1f5d2d41e97">Push Swap — A journey to find most efficient sorting algorithm </a><i>by A. Yigit Ogun;</i>
 
@@ -231,5 +231,4 @@ push_swap : a performant sorting algorithm using 2 stacks (100-630 moves | 500-5
 
 - Point typos causing bugs;
 - Visualizing stack operations via analogies;
-
 - Grammar and spelling check on this very document.

@@ -6,7 +6,7 @@
 /*   By: mnogueir <mnogueir@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 14:51:36 by mnogueir          #+#    #+#             */
-/*   Updated: 2025/10/19 14:56:34 by mnogueir         ###   ########.fr       */
+/*   Updated: 2026/01/06 13:16:32 by mnogueir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
+# include "../../push_swap.h"
 
 int	ft_printf(const char *format, ...);
 int	print_spec(char spec, va_list ap);
