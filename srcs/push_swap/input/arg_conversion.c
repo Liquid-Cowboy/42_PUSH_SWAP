@@ -90,8 +90,11 @@ long long	ft_atol(char *str)
 		is_negative = 1;
 		i++;
 	}
-	while (str[i])
+	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
 		nbr = nbr * 10 + (str[i++] - '0');
+	if (str[i])
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (2147483648);
 	if (is_negative)
 		nbr = -nbr;
 	return (nbr);
