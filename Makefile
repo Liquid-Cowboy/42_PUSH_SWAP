@@ -81,14 +81,15 @@ re: fclean all
 
 check_500 : $(NAME) $(BONUS_NAME)
 	@echo "$(YELLOW)🧠  Does it sort $(GREEN)500$(YELLOW) random integers correctly? (OK/KO)$(RESET)"
-	@ARG=$$(shuf -i 0-2000 -n 10); ./push_swap $$ARG | ./checker $$ARG
+	@ARG=$$(shuf -i 0-2000 -n 500); ./push_swap $$ARG | ./checker $$ARG
 
 check_100: $(NAME) $(BONUS_NAME)
 	@echo "$(YELLOW)🧠  Does it sort $(GREEN)100$(YELLOW) random integers correctly? (OK/KO)$(RESET)"
-	@ARG=$$(shuf -i 0-2000 -n 10); ./push_swap $$ARG | ./checker $$ARG
+	@ARG=$$(shuf -i 0-2000 -n 100); ./push_swap $$ARG | ./checker $$ARG
 
 check_10: $(NAME) $(BONUS_NAME)
 	@echo "$(YELLOW)🧠  Does it sort $(GREEN)10$(YELLOW) random integers correctly? (OK/KO)$(RESET)"
 	@ARG=$$(shuf -i 0-2000 -n 10); ./push_swap $$ARG | ./checker $$ARG
+
 
 .PHONY: all clean fclean re bonus 500 100 10 check_500 check_100 check_10
