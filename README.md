@@ -210,6 +210,21 @@ This process is repeated until every node is pushed from **stack b** to **stack 
 
 ---
 
+### ⚠️ BIG UPDATE (10/01/2026)
+While evaluating the project a friend of mine warned me about an edge case that was not covered by my code. I used a long long conversion so I could safely compare the input string's value to <code>INT_MIN</code> and <code>INT_MAX</code> but I didn't account for it to be bigger than the 64 bit limit. If that does happen:
+- at **9223372036854775807** the program still treats this as an error
+- at **9223372036854775808**(2^64) there's an overflow and it becomes **-9223372036854775808**
+- at **18446744071562067968** the overflow treats this as <code>INT_MIN</code>: **-2147483648**. This is problematic since what should be treated as an error is now a valid value that doesn't arise any warnings.<br><br>
+He also suggested a very smart workaround to this: we'll count the number of digits in the input to check whether it is valid or not. <code>INT_MAX</code> (2147483647) is 10 digits long while <code>INT_MIN</code> is 11 digits long.
+By adding
+```C
+if (i >= 11)
+    return (2147483648)
+```
+we successfully cover this edge case. 
+
+---
+
 ### Bonus
 
 The stack should now be sorted. We'll confirm this by using the `get_next_line` function to read the input from our `push_swap` program. `parse_command()` will then check if the input matches any of the available operations and apply it. If everything works as expected and the stack is sorted (confirmed using `stack_is_sorted()`), the checker program will output '`OK`'.
@@ -233,3 +248,4 @@ push_swap : a performant sorting algorithm using 2 stacks (100-630 moves | 500-5
 - Visualizing stack operations via analogies;
 
 - Grammar and spelling check on this very document.
+
